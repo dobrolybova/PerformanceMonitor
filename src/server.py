@@ -3,7 +3,6 @@ from http import HTTPStatus
 import storage
 from userHandler import UserHandler
 from usersListHandler import UsersListHandler
-from result import Result
 import dataValidator
 
 
@@ -22,7 +21,7 @@ def login() -> Response:
     if user_hash is None:
         return resp(HTTPStatus.UNAUTHORIZED, {"reason": "No user o password, please provide"})
     storage.storage(user_hash)
-    if user_list.add_user(u) == Result.NOK:
+    if user_list.add_user(u) is False:
         return resp(HTTPStatus.UNAUTHORIZED, {"reason": "Wrong password"})
     return resp(HTTPStatus.OK, {"hash": user_hash})
 
@@ -32,7 +31,7 @@ def post_cpu() -> Response:
     user_hash = dataValidator.get_uuid_if_valid(request.json)
     if user_hash is None:
         return resp(HTTPStatus.BAD_REQUEST, {"reason": "Bad arguments"})
-    if storage.post_data(user_hash, request.json) == Result.OK:
+    if storage.post_data(user_hash, request.json) is True:
         return resp(HTTPStatus.OK, {"put_data": request.json})
     return resp(HTTPStatus.UNAUTHORIZED, {"reason": "Not authorized user try to post data, please login"})
 

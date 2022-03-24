@@ -1,12 +1,11 @@
 import os
 import json
-from result import Result
 
 
 storge_data_files = "storge_data_files"
 
 
-def storage(user_hash):
+def storage(user_hash) -> None:
     if not os.path.exists("./" + storge_data_files):
         os.makedirs("./" + storge_data_files)
     f = open(f"./{storge_data_files}/{user_hash}.txt", "w")
@@ -43,11 +42,11 @@ def get(user_hash, time_range) -> list:
     return cpu_list
 
 
-def post_data(user_hash, data) -> Result:
+def post_data(user_hash, data) -> bool:
     if is_hash_valid(user_hash):
         post(data)
-        return Result.OK
-    return Result.NOK
+        return True
+    return False
 
 
 def get_data(user_hash, time_range=None) -> list:
