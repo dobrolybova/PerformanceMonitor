@@ -1,15 +1,58 @@
-class Storage:
-    def __init__(self, user_hash):
-        self.user_hash = user_hash
-        self.data = []
+import os
+import json
+from result import Result
 
-    def post(self, data) -> list:
-        self.data.append(data)
 
-    def get(self, time_range) -> list:
-        cpu_list = [[i['cpu'], i['time']] for i in self.data]
-        return cpu_list
+storge_data_files = "storge_data_files"
 
-    def is_hash_valid(self, other) -> bool:
-        return self.user_hash == other
+
+def storage(user_hash):
+    if not os.path.exists("./" + storge_data_files):
+        os.makedirs("./" + storge_data_files)
+    f = open(f"./{storge_data_files}/{user_hash}.txt", "w")
+    f.close()
+
+
+def convert_file_storage_to_list(data_str) -> list:
+    res = []
+    for token in data_str.split(";"):
+        if token is not '':
+            token = token.replace("'", '"')
+            res.append(json.loads(token))
+    return res
+
+
+def is_hash_valid(other) -> bool:
+    for filename in os.listdir("./" + storge_data_files):
+        if filename == f"{other}.txt":
+            return True
+    return False
+
+
+def post(data) -> list:
+    file_name = data["hash"]
+    f = open(f"./{storge_data_files}/{file_name}.txt", "a")
+    f.write(f"{str(data)};")
+    f.close()
+
+
+def get(user_hash, time_range) -> list:
+    with open(f"./{storge_data_files}/{user_hash}.txt") as f:
+        data = f.readlines()
+    cpu_list = [[i['cpu'], i['time']] for i in convert_file_storage_to_list(data[0])]
+    return cpu_list
+
+
+def post_data(user_hash, data) -> Result:
+    if is_hash_valid(user_hash):
+        post(data)
+        return Result.OK
+    return Result.NOK
+
+
+def get_data(user_hash, time_range=None) -> list:
+    if is_hash_valid(user_hash):
+        return get(user_hash, time_range)
+    return None
+
 
