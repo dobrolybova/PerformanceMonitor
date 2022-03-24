@@ -5,27 +5,18 @@ class StoragesHandler:
     def __init__(self):
         self.storages = []
 
-    def add(self, storage):
+    def add(self, storage) -> list:
         self.storages.append(storage)
 
-    def post_data(self, received_data):
-        try:
-            received_hash = received_data['hash']
-        except KeyError:
-            return Result.NOK
+    def post_data(self, user_hash, data) -> Result:
         for storage in self.storages:
-            if storage.get_user_hash() == received_hash:
-                storage.post(received_data)
+            if storage.is_hash_valid(user_hash):
+                storage.post(data)
                 return Result.OK
         return Result.NOK
 
-    def get_data(self, received_data):
-        time_range = received_data
-        try:
-            received_hash = received_data.to_dict().get('hash')
-        except KeyError:
-            return None
+    def get_data(self, user_hash, time_range=None) -> list:
         for storage in self.storages:
-            if str(storage.get_user_hash()) == str(received_hash):
+            if storage.is_hash_valid(user_hash):
                 return storage.get(time_range)
         return None

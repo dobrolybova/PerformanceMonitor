@@ -6,13 +6,13 @@ class UsersListHandler:
         self.users = []
         pass
 
-    def check_passwd_and_add(self, user):
+    def check_passwd_and_add(self, user) ->Result:
         for u in self.users:
             if u.user == user.user and u.passwd != user.passwd:
                 return Result.NOK
         return Result.OK
 
-    def add_user(self, user):
+    def add_user(self, user) -> Result:
         if not self.users:
             self.users.append(user)
             return Result.OK

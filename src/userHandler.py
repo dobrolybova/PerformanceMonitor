@@ -1,4 +1,4 @@
-import random
+import uuid
 
 
 class UserHandler:
@@ -7,7 +7,7 @@ class UserHandler:
         self.passwd = passwd
         self.hash = None
 
-    def get_hash(self):
+    def get_hash(self) -> uuid.UUID:
         if self.user is not None and self.passwd is not None:
-            self.hash = random.getrandbits(128)
+            self.hash = uuid.uuid4()
         return self.hash
