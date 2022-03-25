@@ -31,7 +31,7 @@ def post_cpu() -> Response:
     user_hash = dataValidator.get_uuid_if_valid(request.json)
     if not user_hash:
         return resp(HTTPStatus.BAD_REQUEST, {"reason": "Bad arguments"})
-    if storage.post_data(user_hash, request.json):
+    if storage.post_data(str(user_hash), request.json):
         return resp(HTTPStatus.OK, {"put_data": request.json})
     return resp(HTTPStatus.UNAUTHORIZED, {"reason": "Not authorized user try to post data, please login"})
 

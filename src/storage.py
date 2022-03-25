@@ -1,5 +1,6 @@
 import os
 import json
+import time
 
 
 storge_data_files = "storge_data_files"
@@ -16,16 +17,17 @@ def get_file_path(user_hash: str) -> str:
 
 def add_user_storage(user_hash: str) -> None:
     file_path = get_file_path(user_hash)
-    with open(file_path, "w"):
-        pass
+    with open(file_path, "w") as f:
+        f.write("cpu,time\n")
 
 
-def convert_file_storage_to_list(data: str) -> list:
-    res = []
-    for token in data.split(";"):
-        if token is not '':
-            res.append(json.loads(token))
-    return res
+def combine_data_to_values_lists(data_list: list) -> list:
+    j = []
+    k = []
+    for i in data_list[1:]:
+        j.append(float(i[0]))
+        k.append(float(i[1].strip()))
+    return [j, k]
 
 
 def is_hash_valid(other: str) -> bool:
@@ -35,22 +37,22 @@ def is_hash_valid(other: str) -> bool:
     return False
 
 
-def post(data) -> None:
+def post(data: json) -> None:
     file_name = data["hash"]
     file_path = get_file_path(file_name)
     with open(file_path, "a") as f:
-        f.write(json.dumps(data) + ";")
+        f.write(str(data["cpu"]) + "," + str(data["time"]) + "\n")
 
 
 def get(user_hash: str, time_range) -> list:
     file_path = get_file_path(user_hash)
     with open(file_path) as f:
         data = f.readlines()
-    cpu_list = [[i['cpu'], i['time']] for i in convert_file_storage_to_list(data[0])]
-    return cpu_list
+    data_list = [i.split(",") for i in data]
+    return combine_data_to_values_lists(data_list)
 
 
-def post_data(user_hash, data) -> bool:
+def post_data(user_hash: str, data: json) -> bool:
     if is_hash_valid(user_hash):
         post(data)
         return True
