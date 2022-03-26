@@ -1,6 +1,6 @@
 import os
 import file_handler
-from typing import Tuple, List, Dict, Any
+from typing import List, Dict, Any
 import csv
 
 file = file_handler.FileHandler("storge_data_files", ".csv")
@@ -11,13 +11,8 @@ def add_user_storage(user_hash: str) -> None:
     file_handler.write_file(file_path, "cpu,time\n")
 
 
-def combine_data_to_values_lists(data_list: List[str]) -> Tuple[List[float], List[float]]:
-    cpus = []
-    timestamps = []
-    for cpu, timestamp in data_list:
-        cpus.append(float(cpu))
-        timestamps.append(float(timestamp))
-    return cpus, timestamps
+def combine_data_to_values_lists(data_list: List[str]) -> List[Dict[str, float]]:
+    return [{"timestamp": float(timestamp), "cpu": float(cpu)} for cpu, timestamp in data_list]
 
 
 def is_hash_valid(other: str) -> bool:
@@ -33,7 +28,7 @@ def post(data: Dict[str, Any]) -> None:
     file_handler.update_file(file_path, str(data["cpu"]) + "," + str(data["time"]) + "\n")
 
 
-def get(user_hash: str, time_range) -> Tuple[List[float], List[float]]:
+def get(user_hash: str, time_range) -> List[Dict]:
     file_path = file.get_file_path(user_hash)
     with open(file_path) as f:
         data_list = list(csv.reader(f.readlines()))
@@ -47,7 +42,7 @@ def post_data(user_hash: str, data: Dict[str, Any]) -> bool:
     return False
 
 
-def get_data(user_hash: str, time_range=None) -> Tuple[List[float], List[float]]:
+def get_data(user_hash: str, time_range=None) -> List[Dict[str, float]]:
     if is_hash_valid(user_hash):
         return get(user_hash, time_range)
-    return [], []
+    return []
