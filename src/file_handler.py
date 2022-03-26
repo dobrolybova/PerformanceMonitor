@@ -20,7 +20,3 @@ class FileHandler:
 
     def get_file_path(self, user_hash: str) -> str:
         return f"{os.path.join(self.storage_path, user_hash)}{self.file_type}"
-
-
-
-
