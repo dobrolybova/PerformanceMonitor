@@ -1,6 +1,6 @@
 from uuid import UUID
 import json
-import dataclasses
+from pydantic import BaseModel, ValidationError, StrictStr
 
 
 def get_uuid_if_valid(user_id: json) -> UUID:
@@ -14,12 +14,11 @@ def get_uuid_if_valid(user_id: json) -> UUID:
 def validate_credentials(data: dict) -> bool:
     try:
         ValidateCredentials(**data)
-    except TypeError:
+    except ValidationError:
         return False
     return True
 
 
-@dataclasses.dataclass
-class ValidateCredentials:
-    user: str
-    passwd: str
+class ValidateCredentials(BaseModel):
+    user: StrictStr
+    passwd: StrictStr
