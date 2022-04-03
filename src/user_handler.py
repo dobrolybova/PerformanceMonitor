@@ -2,8 +2,10 @@ import uuid
 import os
 import file_handler
 from typing import Tuple
+from logs_handler import get_logger
 
 file = file_handler.FileHandler("user_data_files", ".txt")
+logger = get_logger(__name__)
 
 
 def get_user_and_pass(file_path: str) -> Tuple[str, str]:
@@ -26,6 +28,7 @@ def is_user_valid(user: str, passwd: str) -> bool:
 
 
 def add_user(user: str, passwd: str) -> bool:
+    logger.info("Add new user")
     file_path = file.get_file_path(user)
     if os.path.exists(file_path):
         return False

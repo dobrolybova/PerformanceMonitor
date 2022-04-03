@@ -1,12 +1,16 @@
 import os
 import file_handler
-from typing import List, Dict, Any
 import csv
+from typing import List, Dict, Any
+from logs_handler import get_logger
+
 
 file = file_handler.FileHandler("storge_data_files", ".csv")
+logger = get_logger(__name__)
 
 
 def add_user_storage(user_hash: str) -> None:
+    logger.info("Add new storage")
     file_path = file.get_file_path(user_hash)
     file_handler.write_file(file_path, "cpu,time\n")
 

@@ -2,4 +2,5 @@
 storge_data_files/
 tests/.coverage
 user_data_files/
+logs/
 
