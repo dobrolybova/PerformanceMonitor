@@ -1,6 +1,8 @@
 */__pycache__/
-storge_data_files/
+*/storage/__pycache__/
+users/
 tests/.coverage
-user_data_files/
+users_data/
 logs/
+
 

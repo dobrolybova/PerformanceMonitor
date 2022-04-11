@@ -5,3 +5,4 @@ matplotlib==3.5.1
 pytest==7.1.1
 pytest-mock
 pydantic
+psycopg2-binary

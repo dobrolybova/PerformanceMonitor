@@ -1,4 +1,4 @@
-from logging import Logger, getLogger, basicConfig
+from logging import getLogger, basicConfig
 import os
 
 
@@ -16,9 +16,3 @@ def set_log_level(file_name, log_level) -> None:
 
 def set_imported_modules_log_level(log_level) -> None:
     getLogger('werkzeug').setLevel(log_level)
-
-
-def get_logger(name: str) -> Logger:
-    return getLogger(name)
-
-
