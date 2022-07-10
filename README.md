@@ -2,6 +2,13 @@
 
 Flask based web server which store client performance data
 
+## Environment
+
+The server and postgres database are run in Docker containers. To start web server please execute:
+* docker-compose build
+* docker-compose up
+
+
 ## Communication protocol
 
 Client-Server communication is performed via REST API and has the following format:
@@ -59,38 +66,12 @@ hash3------------------------->  hash3.csv:
 
 ### Database(DB) storage
 
-Before start to user DB storage please do the following:
-* Install and run PostgreSQL.
-* Create DB. Possible sql commands: 
-```text
-CREATE DATABASE "PerfomanceMonitor"
-    WITH
-    OWNER = postgres
-    ENCODING = 'UTF8'
-    CONNECTION LIMIT = -1;
-```
-* Create tables "users" and "sessions". Possible sql commands: 
-```text
-CREATE TABLE public."users"
-(
-    "user_name" character varying NOT NULL,
-    user_passwd character varying NOT NULL,
-    user_id bigserial,
-    PRIMARY KEY ("user_name")
-);
+When server is running the first time DB should be initialized using the following script:
+* init_db.py<br>
 
-ALTER TABLE IF EXISTS public."Users"
-    OWNER to postgres;
-CREATE TABLE public."sessions"
-(
-    user_id integer NOT NULL,
-    user_session uuid,
-    user_cpu double precision,
-    user_timestamp double precision
-);
-```
+It creates "performancemonitor" DB and needed tables.
 
-User data is stored un user table which contains name, password and special ID. This ID connects(in fact just a counter) connects "user" table with "sessions" table. "sessions" table contents hash and all posted data.
+User data is stored in user table which contains name, password and special ID. This ID connects(in fact just a counter) connects "user" table with "sessions" table. "sessions" table contents hash and all posted data.
 
 ```text
 _______________________________       ____________________________________________

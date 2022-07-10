@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  flask:
+    build: .
+    command: gunicorn -w 1 -b 0.0.0.0:8080 main:app --reload
+    ports:
+      - "8080:8080"
+    image: server:latest
+    working_dir: /WebServer/src
+    volumes:
+      - ./src:/WebServer/src
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: example

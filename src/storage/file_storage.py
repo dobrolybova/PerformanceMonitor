@@ -68,7 +68,7 @@ class FileStorage(AbcStorage):
 class FileHandler:
     def __init__(self, storge_directory: str, file_type: str):
         self.file_type = file_type
-        target_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+        target_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../..")
         self.storage_path = os.path.join(target_path, storge_directory)
         os.makedirs(self.storage_path, exist_ok=True)
 

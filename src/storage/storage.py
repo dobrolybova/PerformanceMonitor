@@ -47,7 +47,7 @@ class Storage:
     def get_hash(self, user_name: str) -> uuid.UUID:
         return self.storage.get_hash(user_name)
 
-    def add_user(self, user_name: str, passwd: str) -> bool:
+    def add_user(self, user_name: str, passwd: str) -> None:
         return self.storage.add_user(user_name, passwd)
 
     def is_user_exist(self, user_name: str) -> bool:

@@ -8,11 +8,11 @@ from .storage import AbcStorage
 
 class DbStorage(AbcStorage):
     def __init__(self):
-        self.users_conn = psycopg2.connect(dbname='PerformanceMonitor', user='postgres',
-                                           password='Summer25!', host="localhost")
+        self.users_conn = psycopg2.connect(dbname='performancemonitor', user='postgres',
+                                           password='example', host="db", port='5432')
         self.users_cursor = self.users_conn.cursor()
-        self.sessions_conn = psycopg2.connect(dbname='PerformanceMonitor', user='postgres',
-                                              password='Summer25!', host="localhost")
+        self.sessions_conn = psycopg2.connect(dbname='performancemonitor', user='postgres',
+                                              password='example', host="db", port='5432')
         self.sessions_cursor = self.sessions_conn.cursor()
         super().__init__()
 

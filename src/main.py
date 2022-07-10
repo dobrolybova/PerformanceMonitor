@@ -20,7 +20,7 @@ def main():
     file_name = make_logs_dir("logs")
     set_log_level(file_name, INFO)
     set_imported_modules_log_level(CRITICAL)
-    app.run()
+    app.run(port=8080, host="0.0.0.0")
 
 
 def resp(code, data) -> Response:
